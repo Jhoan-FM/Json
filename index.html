@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jhoan Figuereo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h2> Menú libre para editar</h2>
+
+  <div id="menu-container">
+  </div>
+
+  <hr>
+
+  <h3>Editar Menú</h3>
+  <form id="menu-form">
+    <label for="menu-name">Nombre del Menú:</label>
+    <input type="text" id="menu-name" placeholder="Nombre del menú">
+    
+    <label for="menu-link">Enlace del Menú:</label>
+    <input type="text" id="menu-link" placeholder="Enlace del menú">
+    
+    <button type="submit">Agregar Menú</button>
+  </form>
+
+  <script>
+    let menuData = {
+      "menu": [
+        {
+          "id": 1,
+          "name": "Home",
+          "link": "/home",
+          "submenu": []
+        },
+        {
+          "id": 2,
+          "name": "About",
+          "link": "/about",
+          "submenu": [
+            {
+              "id": 21,
+              "name": "Team",
+              "link": "/about/team"
+            },
+            {
+              "id": 22,
+              "name": "Company",
+              "link": "/about/company"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "name": "Services",
+          "link": "/services",
+          "submenu": []
+        },
+        {
+          "id": 4,
+          "name": "Contact",
+          "link": "/contact",
+          "submenu": []
+        }
+      ]
+    };
+
+    const menuContainer = document.getElementById('menu-container');
+    const menuForm = document.getElementById('menu-form');
+    const menuNameInput = document.getElementById('menu-name');
+    const menuLinkInput = document.getElementById('menu-link');
+
+    const renderMenu = () => {
+      menuContainer.innerHTML = '';
+      const ul = document.createElement('ul');
+      menuData.menu.forEach(item => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.link;
+        a.textContent = item.name;
+        li.appendChild(a);
+        
+        if (item.submenu.length > 0) {
+          const subMenu = createSubMenu(item.submenu);
+          li.appendChild(subMenu);
+        }
+
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Editar';
+        editButton.onclick = () => editMenu(item.id);
+        li.appendChild(editButton);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Eliminar';
+        deleteButton.onclick = () => deleteMenu(item.id);
+        li.appendChild(deleteButton);
+
+        ul.appendChild(li);
+      });
+      menuContainer.appendChild(ul);
+    };
+
+    const createSubMenu = (submenu) => {
+      const subMenuUl = document.createElement('ul');
+      submenu.forEach(subitem => {
+        const subLi = document.createElement('li');
+        const subA = document.createElement('a');
+        subA.href = subitem.link;
+        subA.textContent = subitem.name;
+        subLi.appendChild(subA);
+        subMenuUl.appendChild(subLi);
+      });
+      return subMenuUl;
+    };
+
+    const editMenu = (id) => {
+      const menu = menuData.menu.find(item => item.id === id);
+      menuNameInput.value = menu.name;
+      menuLinkInput.value = menu.link;
+      
+      menuForm.onsubmit = (e) => {
+        e.preventDefault();
+        menu.name = menuNameInput.value;
+        menu.link = menuLinkInput.value;
+        renderMenu();
+        menuForm.reset();
+      };
+    };
+
+    const deleteMenu = (id) => {
+      menuData.menu = menuData.menu.filter(item => item.id !== id);
+      renderMenu();
+    };
+
+    menuForm.onsubmit = (e) => {
+      e.preventDefault();
+      const newMenu = {
+        id: menuData.menu.length + 1,
+        name: menuNameInput.value,
+        link: menuLinkInput.value,
+        submenu: []
+      };
+      menuData.menu.push(newMenu);
+      renderMenu();
+      menuForm.reset();
+    };
+
+    renderMenu();
+
+  </script>
+
+</body>
+</html>
