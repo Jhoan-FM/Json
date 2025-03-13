@@ -1,0 +1,40 @@
+{
+    "menu": [
+      {
+        "id": 1,
+        "name": "Home",
+        "link": "/home",
+        "submenu": []
+      },
+      {
+        "id": 2,
+        "name": "About",
+        "link": "/about",
+        "submenu": [
+          {
+            "id": 21,
+            "name": "Team",
+            "link": "/about/team"
+          },
+          {
+            "id": 22,
+            "name": "Company",
+            "link": "/about/company"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Services",
+        "link": "/services",
+        "submenu": []
+      },
+      {
+        "id": 4,
+        "name": "Contact",
+        "link": "/contact",
+        "submenu": []
+      }
+    ]
+  }
+  
